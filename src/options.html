@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Tiny D20 Options</title>
+	<title>Tiny D20x Options</title>
 	<link rel="stylesheet" type="text/css" href="options.css" />
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 	<script src="../lib/jquery-3.1.1.min.js"></script>
@@ -11,7 +11,7 @@
 	<script src="options.js"></script>
 </head>
 <body>
-	
+
 	<p class="option">
 		<label for="color" class="title">Icon Color:</label>
 		<select id="color" class="control">
@@ -27,10 +27,15 @@
 		<label for="onlyShowMacroName" class="title">Only Show Macro Name:</label>
 		<input type="checkbox" id="onlyShowMacroName" value="onlyShowMacroName">
 	</p>
-	
+
 	<p class="option">
 		<label for="alwaysShowAdvanced" class="title">Always Show Advanced Results:</label>
 		<input type="checkbox" id="alwaysShowAdvanced" value="advStartsOpen">
+	</p>
+
+	<p class="option">
+		<label for="sortAdvanced" class="title">Sort Advanced Results:</label>
+		<input type="checkbox" id="sortAdvanced" value="sortAdvanced" checked>
 	</p>
 
 	<p class="option">
@@ -40,12 +45,13 @@
 
 	<p class="option">
 		<label for="macro_table" class="title">Macros</label>
-		
+
 		<div class="macros_container">
 			<table id='macro_table'>
 				<tr>
 					<th>Name</th>
 					<th>Value<br><span class='subtext'>(Must be in format XdY or XdY+Z or XdY-Z)</span></th>
+					<th>Add modifier to all rolls</th>
 					<th>Options</th>
 				</tr>
 				<tr>
@@ -54,6 +60,9 @@
 					</td>
 					<td>
 						<input type="text" placeholder="Value (ex: 2d20+1)" id="macro_value" />
+					</td>
+					<td>
+						<input type="checkbox" id="macro_modPerRoll" />
 					</td>
 					<td>
 						<input type="button" value="Create Macro" id="btn_create" disabled />

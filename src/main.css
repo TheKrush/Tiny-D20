@@ -63,10 +63,10 @@ input[type=radio]:checked + label {
 
 
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 #custom-roll-container {
@@ -100,7 +100,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .addtl-info {
 	display: inline-block;
-	width: 40%;
+	width: 30%;
 }
 
 .addtl-info input {
@@ -152,7 +152,7 @@ input[type=number]::-webkit-outer-spin-button {
 	color: #FC0006;
 }
 
-#results-table, #minmax-table {
+#results-table, #sorted-results-table, #minmax-table {
 	table-layout: fixed;
 	border: 2px solid #ddd;
 	border-collapse: collapse;
@@ -164,11 +164,11 @@ input[type=number]::-webkit-outer-spin-button {
   font-size: x-small;
 }
 
-#results-table tr:nth-child(even){
+#results-table tr:nth-child(even), #sorted-results-table tr:nth-child(even) {
   background:#e5e5e5;
 }
 
-#results-table td, #minmax-table td {
+#results-table td, #sorted-results-table td, #minmax-table td {
 	width: 50px;
 	min-width: 50px;
 	max-width: 100px;
@@ -177,12 +177,12 @@ input[type=number]::-webkit-outer-spin-button {
 	vertical-align: middle;
 }
 
-#results-table td:first-child {
+#results-table td:first-child, #sorted-results-table td:first-child {
 	color: #cdcdcd;
 	font-size: x-small;
 }
 
-#results-table td:last-child {
+#results-table td:last-child, #sorted-results-table td:last-child {
 	font-weight: bold;
 	font-size: medium;
 }

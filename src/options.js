@@ -10,6 +10,7 @@ function init() {
 function addEventHandlers() {
     $("#color").change(saveCurrentConfiguration);
     $("#alwaysShowAdvanced").change(saveCurrentConfiguration);
+    $("#sortAdvanced").change(saveCurrentConfiguration);
     $("#rollAnimation").change(saveCurrentConfiguration);
     $("#onlyShowMacroName").change(saveCurrentConfiguration);
     resetMacroInputHandlers();
@@ -18,10 +19,12 @@ function addEventHandlers() {
 function resetMacroInputHandlers() {
     $("#macro_name").off();
     $("#macro_value").off();
+    //$("#macro_modPerRoll").off();
     $("#btn_create").off();
 
     $("#macro_name").on("input", validateMacro);
     $("#macro_value").on("input", validateMacro);
+    //$("#macro_modPerRoll").on("input", validateMacro);
     $("#btn_create").on("click", createMacro);
 }
 
@@ -36,6 +39,7 @@ function setConfiguration(config) {
     currentConfiguration = config;
     $("#color").val(config.iconColor);
     $("#alwaysShowAdvanced").prop("checked", config.alwaysShowAdvanced);
+    $("#sortAdvanced").prop("checked", config.sortAdvanced);
     $("#rollAnimation").prop("checked", config.showRollAnimation);
     $("#onlyShowMacroName").prop("checked", config.onlyShowMacroName);
     updateTable();
@@ -50,10 +54,11 @@ function setConfiguration(config) {
 function saveCurrentConfiguration() {
     var color = $("#color").val();
     var alwaysShowAdvanced = $("#alwaysShowAdvanced").prop("checked");
+    var sortAdvanced = $("#sortAdvanced").prop("checked");
     var showRollAnimation = $("#rollAnimation").prop("checked");
     var onlyShowMacroName = $("#onlyShowMacroName").prop("checked");
     var macros = currentConfiguration.macros;
-    newConfig = new Configuration(color, alwaysShowAdvanced, showRollAnimation, macros, onlyShowMacroName);
+    newConfig = new Configuration(color, alwaysShowAdvanced, sortAdvanced, showRollAnimation, macros, onlyShowMacroName);
 
     currentConfiguration = newConfig;
     setConfiguration(currentConfiguration);

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>D20</title>
+	<title>D20x</title>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
 	<link rel="stylesheet" type="text/css" href="main.css" />
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
@@ -39,19 +39,22 @@
 				<h3 class="prompt">Modifier</h3>
 				<input type="number" id="modifier" class="control" value="0">
 			</div>
-			
+			<div id="mpr-container" class="addtl-info">
+				<h3 class="prompt">MPR?</h3>
+				<input type="checkbox" id="modifierPerRoll" class="control">
+			</div>
+
 			<div id='custom-roll-container' style="display:none">
 				<h4>or</h4>
 
 				<input type="text" placeholder="Enter a custom roll..." id='custom-rolls-field'>
 			</div>
-			
 		</div>
 
 		<hr class="thin-line">
 
 		<div id="result-container">
-			
+
 			<h1 id="result">0</h1>
 			<input type="button" id="roll-button" value="Roll!">
 			<div id="macros_list">
@@ -77,9 +80,8 @@
 
 			<table id="results-table">
 			</table>
-
 		</div>
-			
+
 	</div>
 </body>
 </html>

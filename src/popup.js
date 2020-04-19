@@ -29,6 +29,7 @@ function addEventHandlers() {
     $("#die-type-container").on("change", updateRollButton);
     $("#num-rolls").on("input", updateRollButton);
     $("#modifier").on("input", updateRollButton);
+    $("#modifierPerRoll").on("change", updateRollButton);
 }
 
 function updateRollButton() {
@@ -96,10 +97,15 @@ function roll(rollConfig) {
     var rollsArray = [];
     for (var rollNumber = 0; rollNumber < parseInt(rollConfig.numberOfRolls); rollNumber++) {
         var currentRoll = randInt(1, rollConfig.dieType);
+        if (rollConfig.modifierPerRoll) {
+            currentRoll += parseInt(rollConfig.modifier);
+        }
         total += currentRoll;
         rollsArray[rollNumber] = currentRoll;
     }
-    total += parseInt(rollConfig.modifier);
+    if (!rollConfig.modifierPerRoll) {
+        total += parseInt(rollConfig.modifier);
+    }
 
     if (config.showRollAnimation) {
         if (rollsLeft > 0) {
@@ -119,14 +125,26 @@ function roll(rollConfig) {
         }
     }
 
-    var minPossibleResult = parseInt(rollConfig.numberOfRolls) + rollConfig.modifier;
-    var maxPossibleResult = parseInt(rollConfig.numberOfRolls) * rollConfig.dieType + rollConfig.modifier;
+    var minPossibleResult = 0
+    var maxPossibleResult = 0
+
+    if (rollConfig.modifierPerRoll) {
+        minPossibleResult = parseInt(1) + parseInt(rollConfig.modifier);
+        maxPossibleResult = parseInt(rollConfig.dieType) + parseInt(rollConfig.modifier)
+    } else {
+        minPossibleResult = parseInt(rollConfig.numberOfRolls) + parseInt(rollConfig.modifier);
+        maxPossibleResult = parseInt(rollConfig.numberOfRolls) * parseInt(rollConfig.dieType) + parseInt(rollConfig.modifier);
+    }
     setResult(total, minPossibleResult, maxPossibleResult);
     $("#toggle-advanced").show();
     if (config.alwaysShowAdvanced) {
         showAdvanced();
     }
-    setAdvancedResultsFromArray(rollsArray, 1, rollConfig.dieType);
+    var includedModifier = 0;
+    if (rollConfig.modifierPerRoll) {
+        includedModifier = parseInt(rollConfig.modifier);
+    }
+    setAdvancedResultsFromArray(rollsArray, 1, rollConfig.dieType, includedModifier);
 }
 
 /**
@@ -168,16 +186,23 @@ function setResult(number, minPossibleResult, maxPossibleResult) {
  * Takes an array of rolls (ints), the minimum possible result, and the maximum possible result
  * and populates the "Advanced Results" section.
  **/
-function setAdvancedResultsFromArray(arr, minPossibleResult, maxPossibleResult) {
+function setAdvancedResultsFromArray(arr, minPossibleResult, maxPossibleResult, includedModifier) {
     var table = document.getElementById("results-table");
+    var sortedTable = document.getElementById("sorted-results-table");
 
     // clear the table
     table.innerHTML = "";
+
+    if (config.sortAdvanced) {
+        arr.sort(function(a, b){return b-a});
+    }
 
     // populate table from array
     for (var i = arr.length - 1; i >= 0; i--) {
 
         var num = arr[i];
+        var natRoll = num - includedModifier;
+
         var newRow = table.insertRow(0);
 
         //count column
@@ -186,14 +211,33 @@ function setAdvancedResultsFromArray(arr, minPossibleResult, maxPossibleResult) 
 
         //roll column
         var rollCell = newRow.insertCell(-1);
-        rollCell.innerHTML = num;
+        rollCell.innerHTML = natRoll;
 
-        if (num == maxPossibleResult) {
+        if (natRoll == maxPossibleResult) {
             rollCell.className += " nat-max";
-        } else if (num == minPossibleResult) {
+        } else if (natRoll == minPossibleResult) {
             rollCell.className += " nat-min";
         }
+
+        if (includedModifier != 0) {
+            //mod column
+            var rollModCell = newRow.insertCell(-1);
+            rollModCell.innerHTML = num;
+
+            if (natRoll == maxPossibleResult) {
+                rollModCell.className += " nat-max";
+            } else if (natRoll == minPossibleResult) {
+                rollModCell.className += " nat-min";
+            }
+        }
     };
+
+    var headerRow = table.insertRow(0);
+    headerRow.insertCell(0).innerHTML = "Roll #";
+    headerRow.insertCell(-1).innerHTML = "Roll";
+    if (includedModifier != 0) {
+        headerRow.insertCell(-1).innerHTML = "Roll Total";
+    }
 
     // hide the min/max view if the array length == 1
     if (arr.length == 1) {
@@ -242,6 +286,7 @@ function captureCurrentRollConfig() {
     var dieType = $("input[name=die-type]:checked").val();
     var modifier = $("#modifier").val();
     var numberOfRolls = $("#num-rolls").val();
+    var modifierPerRoll = $("#modifierPerRoll").is(":checked")
 
-    return new RollConfig(numberOfRolls, dieType, modifier);
+    return new RollConfig(numberOfRolls, dieType, modifier, modifierPerRoll);
 }
